@@ -1,0 +1,10 @@
+*.zip
+*.classpath
+*.project
+*.iml
+*.idea
+*.settings
+*.txt
+*.dot
+*.png
+bin
