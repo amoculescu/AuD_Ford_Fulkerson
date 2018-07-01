@@ -132,36 +132,20 @@ public class MaxFlow {
             String sourceName = sources[0];
             String sinkName = destinations[0];
 
+            //check if sources/sinks exists and if multiple sources/sinks, create "superSource/-Sink"
             boolean sourceNotFound = false;
             if (sources.length > 1){
-                startNode = new Node("superSource", 0);
-                for(int i = 0; i < sources.length; i ++){
-                    Node source = findNode(sources[i]);
-                    if(source != null) {
-                        Edge newEdge = new Edge(startNode, source, Integer.MAX_VALUE, 0);
-                        startNode.addEdge(newEdge);
-                    } else {
-                        sourceNotFound = true;
-                    }
-                }
-                nodes.add(0, startNode);
+                sourceNotFound = addSuperNode("superSource", sources);
                 sourceName = "superSource";
-            }
+            }else
+                sourceNotFound = findNode(sourceName) == null;
             boolean destinationNotFound = false;
             if (destinations.length > 1){
-                startNode = new Node("superSink", 0);
-                for(int i = 0; i < destinations.length; i ++){
-                    Node destination = findNode(destinations[i]);
-                    if(destination != null) {
-                        Edge newEdge = new Edge(destination, startNode, Integer.MAX_VALUE, 0);
-                        destination.addEdge(newEdge);
-                    }else {
-                        destinationNotFound = true;
-                    }
-                }
-                nodes.add(0, startNode);
+                destinationNotFound = addSuperNode("superSink", destinations);
                 sinkName = "superSink";
-            }
+            }else
+                destinationNotFound = findNode(sinkName) == null;
+
             if(sourceNotFound && destinationNotFound)
                 return NO_SOURCE_DESTINATION_FOUND;
             else if (sourceNotFound)
@@ -169,40 +153,78 @@ public class MaxFlow {
             else if (destinationNotFound)
                 return NO_DESTINATION_FOUND;
 
+            //set flow to 0
             setZero();
             ArrayList<Node> path = new ArrayList<>();
             startNode = findNode(sourceName);
+            //find first path, if no path found return NO_PATH
             Node pathNode = pathfinder.findPathFlow(sourceName, sinkName, nodes);
             if (pathNode.getName().equals("null") && pathNode.getDelay() == -4)
                 return NO_PATH;
-
+            //main loop;
             while (pathNode.getName() != "null") {
                 double flow = Double.POSITIVE_INFINITY;
                 path.clear();
+                //find minimum residual capacity in path as new flow
                 while (pathNode != null) {
                     path.add(pathNode);
                     if (pathNode != startNode && pathNode.getEdgeToPrevious().getResidualFlow() < flow)
                         flow = pathNode.getEdgeToPrevious().getResidualFlow();
                     pathNode = pathNode.getPreviousInPath();
                 }
+                //add min(new flow. residual capacity) to old flow, and subtract same from residual capacity
                 for (int i = 0; i < path.size(); i++) {
                     if (path.get(i) != startNode) {
                         path.get(i).getEdgeToPrevious().setFlow(path.get(i).getEdgeToPrevious().getFlow() + Math.min(flow, path.get(i).getEdgeToPrevious().getResidualFlow()));
                         path.get(i).getEdgeToPrevious().setResidualFlow(path.get(i).getEdgeToPrevious().getResidualFlow() - Math.min(flow, path.get(i).getEdgeToPrevious().getResidualFlow()));
                     }
                 }
+                //find next path
                 pathNode = pathfinder.findPathFlow(sourceName, sinkName, nodes);
             }
-            if (pathNode.getName() == "null" && !(pathNode.getDelay() == -4)) {
-                return (int) pathNode.getDelay();
-            } else {
-                return startNode.getOutgoingFlow();
-            }
+            //after algorithm is done maximum flow is the summation of all the outgoing flows of all the sources/destinations
+            return startNode.getOutgoingFlow();
         }
 	}
 
+    /**
+     * if multiple sources or destinations, insert a single source or destination as source/destination
+     * @param sourceOrDestination
+     *      string defining whether source or destination is inserted
+     * @param sourceOrDestinationArray
+     *      array containing the sources or destinations
+     * @return
+     *      boolean if all the sources or destinations were found
+     */
+    private boolean addSuperNode(String sourceOrDestination, String[] sourceOrDestinationArray){
+        boolean dsNotFound = false;
+        Node superNode = new Node(sourceOrDestination, 0);
+        for(int i = 0; i < sourceOrDestinationArray.length; i ++){
+            //ds = find the node with the source/destination name
+            Node ds = findNode(sourceOrDestinationArray[i]);
+            //if destination and exists make edge from destination to "superSink"
+            if(ds != null && sourceOrDestination.equals("superSink")) {
+                Edge newEdge = new Edge(ds, superNode, Integer.MAX_VALUE, 0);
+                ds.addEdge(newEdge);
+            }
+            //if source and exists make edge from "superSource" to source
+            else if(ds != null && sourceOrDestination.equals("superSource")){
+                Edge newEdge = new Edge(superNode, ds, Integer.MAX_VALUE, 0);
+                superNode.addEdge(newEdge);
+            }
+            // either source or destination not found
+            else {
+                dsNotFound = true;
+            }
+        }
+        //add new nodes at index 0;
+        nodes.add(0, superNode);
+        return dsNotFound;
+    }
 
-
+    /**
+     * initialization of the edges, set residiual flow to maximum capacity, and set flow to 0
+     */
 	private void setZero(){
 	    for(int i = 0; i < nodes.size(); i++){
 	        Node currentNode = nodes.get(i);
@@ -222,39 +244,35 @@ public class MaxFlow {
 	 * @return a ArrayList of Strings as specified in the task in dot code
 	 */
 	public final ArrayList<String> findResidualNetwork(final String[] sources,	final String[] destinations) {
-		int flow = findMaxFlow(sources, destinations);
-		if(flow > 0 && flow != Integer.MAX_VALUE) {
-            if (nodes.get(0).getName().equals("superSink"))
-                nodes.remove(0);
-		    if(nodes.get(0).getName().equals("superSource"))
-		        nodes.remove(0);
-            ArrayList<String> map = new ArrayList<>();
-            String currentLine = "Digraph {";
-            Node currentNode;
-            Edge currentEdge;
-            map.add(currentLine);
-            for (int i = 0; i < nodes.size(); i++) {
-                currentNode = nodes.get(i);
-                for (int j = 0; j < currentNode.getEdges().size(); j++) {
-                    currentEdge = currentNode.getEdge(j);
-                    currentLine = currentNode.getName() + " -> " + currentEdge.getB().getName() + "[label=\"" + (int) (currentEdge.getFlow() + currentEdge.getResidualFlow()) + "-" + (int) currentEdge.getFlow() + "\"]";
-                    if (currentEdge.getResidualFlow() > 0)
-                        currentLine += "[style=bold];";
-                    else
-                        currentLine += ";";
-                    map.add(1, currentLine);
-                }
+		findMaxFlow(sources, destinations);
+        if (destinations.length > 1)
+            nodes.remove(0);
+        if(sources.length > 1)
+            nodes.remove(0);
+        ArrayList<String> map = new ArrayList<>();
+        String currentLine = "Digraph {";
+        Node currentNode;
+        Edge currentEdge;
+        map.add(currentLine);
+        for (int i = 0; i < nodes.size(); i++) {
+            currentNode = nodes.get(i);
+            for (int j = 0; j < currentNode.getEdges().size(); j++) {
+                currentEdge = currentNode.getEdge(j);
+                currentLine = currentNode.getName() + " -> " + currentEdge.getB().getName() + "[label=\"" + (int) (currentEdge.getFlow() + currentEdge.getResidualFlow()) + "-" + (int) currentEdge.getFlow() + "\"]";
+                if (currentEdge.getResidualFlow() > 0)
+                    currentLine += "[style=bold];";
+                else
+                    currentLine += ";";
+                map.add(1, currentLine);
             }
-            for(int i = 0; i < sources.length; i ++){
-                map.add(sources[i] + "[shape=doublecircle][style=bold];");
-            }
-            for(int i = 0; i < destinations.length; i ++){
-                map.add(destinations[i] + "[shape=circle][style=bold];");
-            }
-            map.add("}");
-            return map;
         }
-        return null; // dummy, replace
-	}
-
+        for(int i = 0; i < sources.length; i ++){
+            map.add(sources[i] + "[shape=doublecircle][style=bold];");
+        }
+        for(int i = 0; i < destinations.length; i ++){
+            map.add(destinations[i] + "[shape=circle][style=bold];");
+        }
+        map.add("}");
+        return map;
+    }
 }

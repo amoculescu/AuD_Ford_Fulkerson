@@ -30,7 +30,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A" };
 			String[] destinations = { "E" };
-			assertEquals(21, testMaxFlow("Iksburg7", sources, destinations), "MaxFlow not correct!");
+			assertEquals(21, testMaxFlow("Iksburgserver7", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -39,7 +39,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A" };
 			String[] destinations = { "E" };
-			ArrayList<String> flowGraph = new MaxFlow("Iksburg7").findResidualNetwork(sources, destinations);
+			ArrayList<String> flowGraph = new MaxFlow("Iksburgserver7").findResidualNetwork(sources, destinations);
 
 			assertTrue(isEdgeMarkedRight(flowGraph, "A[ ]*->[ ]*B"), "Edge A->B was wrongly bolded!");
 			assertTrue(isEdgeMarkedRight(flowGraph, "A[ ]*->[ ]*C"), "Edge A->C was wrongly bolded!");
@@ -56,7 +56,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A", "C" };
 			String[] destinations = { "E" };
-			int maxFlow = testMaxFlow("Iksburg7", sources, destinations);
+			int maxFlow = testMaxFlow("Iksburgserver7", sources, destinations);
 			assertEquals(23, maxFlow, "MaxFlow not correct!");
 		});
 	}
@@ -66,7 +66,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A", "B" };
 			String[] destinations = { "E", "D" };
-			int maxFlow = testMaxFlow("Iksburg7", sources, destinations);
+			int maxFlow = testMaxFlow("Iksburgserver7", sources, destinations);
 			assertEquals(26, maxFlow, "MaxFlow not correct!");
 		});
 	}
@@ -76,7 +76,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A", "B" };
 			String[] destinations = { "E", "D" };
-			ArrayList<String> flowGraph = new MaxFlow("Iksburg7").findResidualNetwork(sources, destinations);
+			ArrayList<String> flowGraph = new MaxFlow("Iksburgserver7").findResidualNetwork(sources, destinations);
 			assertTrue(areSourcesSinksMarkedRight(flowGraph, sources, destinations),
 					"Sources and/or sinks are not marked correctly!");
 		});
@@ -87,7 +87,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A" };
 			String[] destinations = { "E" };
-			assertEquals(15, testMaxFlow("Iksburg5", sources, destinations), "MaxFlow not correct!");
+			assertEquals(15, testMaxFlow("Iksburgserver5", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -96,7 +96,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "C" };
 			String[] destinations = { "E" };
-			assertEquals(16, testMaxFlow("Iksburg5", sources, destinations), "MaxFlow not correct!");
+			assertEquals(16, testMaxFlow("Iksburgserver5", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -105,7 +105,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A", "C" };
 			String[] destinations = { "D", "E" };
-			assertEquals(28, testMaxFlow("Iksburg5", sources, destinations), "MaxFlow not correct!");
+			assertEquals(28, testMaxFlow("Iksburgserver5", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -114,7 +114,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "X" };
 			String[] destinations = { "E" };
-			int x = testMaxFlow("Iksburg5", sources, destinations);
+			int x = testMaxFlow("Iksburgserver5", sources, destinations);
 			assertEquals(-1, x, "MaxFlow not correct!");
 		});
 	}
@@ -124,7 +124,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A" };
 			String[] destinations = { "Y" };
-			assertEquals(-2, testMaxFlow("Iksburg5", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-2, testMaxFlow("Iksburgserver5", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -133,7 +133,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "X" };
 			String[] destinations = { "Y" };
-			assertEquals(-3, testMaxFlow("Iksburg5", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-3, testMaxFlow("Iksburgserver5", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -142,7 +142,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "E" };
 			String[] destinations = { "A" };
-			assertEquals(-4, testMaxFlow("Iksburg5", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-4, testMaxFlow("Iksburgserver5", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -151,7 +151,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "B" };
 			String[] destinations = { "B" };
-			assertEquals(Integer.MAX_VALUE, testMaxFlow("Iksburg5", sources, destinations), "MaxFlow not correct!");
+			assertEquals(Integer.MAX_VALUE, testMaxFlow("Iksburgserver5", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -162,7 +162,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "H", "I" };
 			String[] destinations = { "J" };
-			assertEquals(55, testMaxFlow("Iksburg6", sources, destinations), "MaxFlow not correct!");
+			assertEquals(55, testMaxFlow("Iksburgserver6", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -172,7 +172,7 @@ public class AllServerTests {
 			String[] sources = { "H", "I" };
 			String[] destinations = { "J" };
 			String[] cut = new String[] { "H[ ]*->[ ]*J", "I[ ]*->[ ]*J" };
-			ArrayList<String> flowGraph = new MaxFlow("Iksburg6").findResidualNetwork(sources, destinations);
+			ArrayList<String> flowGraph = new MaxFlow("Iksburgserver6").findResidualNetwork(sources, destinations);
 
 			assertEquals(55, cutFlow(flowGraph, cut), "The cut is different from max flow!");
 		});
@@ -183,7 +183,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "C", "J" };
 			String[] destinations = { "G" };
-			int maxFlow = testMaxFlow("Iksburg6", sources, destinations);
+			int maxFlow = testMaxFlow("Iksburgserver6", sources, destinations);
 			assertEquals(13, maxFlow, "MaxFlow not correct!");
 		});
 	}
@@ -193,7 +193,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "D" };
 			String[] destinations = { "H" };
-			assertEquals(10, testMaxFlow("Iksburg6", sources, destinations), "MaxFlow not correct!");
+			assertEquals(10, testMaxFlow("Iksburgserver6", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -203,7 +203,7 @@ public class AllServerTests {
 			String[] sources = { "D" };
 			String[] destinations = { "H" };
 			String[] cut = new String[] { "G[ ]*->[ ]*H" };
-			ArrayList<String> flowGraph = new MaxFlow("Iksburg6").findResidualNetwork(sources, destinations);
+			ArrayList<String> flowGraph = new MaxFlow("Iksburgserver6").findResidualNetwork(sources, destinations);
 
 			assertEquals(10, cutFlow(flowGraph, cut), "The cut is different from max flow!");
 		});
@@ -214,7 +214,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A" };
 			String[] destinations = { "E" };
-			assertEquals(15, testMaxFlow("Iksburg6", sources, destinations), "MaxFlow not correct!");
+			assertEquals(15, testMaxFlow("Iksburgserver6", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -223,7 +223,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A" };
 			String[] destinations = { "J" };
-			assertEquals(14, testMaxFlow("Iksburg6", sources, destinations), "MaxFlow not correct!");
+			assertEquals(14, testMaxFlow("Iksburgserver6", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -232,7 +232,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "X" };
 			String[] destinations = { "E" };
-			int x = testMaxFlow("Iksburg6", sources, destinations);
+			int x = testMaxFlow("Iksburgserver6", sources, destinations);
 			assertEquals(-1, x, "MaxFlow not correct!");
 		});
 	}
@@ -242,7 +242,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A" };
 			String[] destinations = { "Z" };
-			assertEquals(-2, testMaxFlow("Iksburg6", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-2, testMaxFlow("Iksburgserver6", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -251,7 +251,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "X" };
 			String[] destinations = { "Y" };
-			assertEquals(-3, testMaxFlow("Iksburg6", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-3, testMaxFlow("Iksburgserver6", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -260,7 +260,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "E" };
 			String[] destinations = { "A" };
-			assertEquals(-4, testMaxFlow("Iksburg6", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-4, testMaxFlow("Iksburgserver6", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -269,7 +269,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "B" };
 			String[] destinations = { "B" };
-			assertEquals(Integer.MAX_VALUE, testMaxFlow("Iksburg6", sources, destinations), "MaxFlow not correct!");
+			assertEquals(Integer.MAX_VALUE, testMaxFlow("Iksburgserver6", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -281,7 +281,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A" };
 			String[] destinations = { "F" };
-			assertEquals(140, testMaxFlow("Iksburg1", sources, destinations), "MaxFlow not correct!");
+			assertEquals(140, testMaxFlow("Iksburgserver1", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -291,7 +291,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A" };
 			String[] destinations = { "F" };
-			assertEquals(140, testMaxFlow("Iksburg1", sources, destinations), "MaxFlow not correct!");
+			assertEquals(140, testMaxFlow("Iksburgserver1", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -300,7 +300,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "X" };
 			String[] destinations = { "F" };
-			assertEquals(-1, testMaxFlow("Iksburg1", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-1, testMaxFlow("Iksburgserver1", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -309,7 +309,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A" };
 			String[] destinations = { "Y" };
-			assertEquals(-2, testMaxFlow("Iksburg1", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-2, testMaxFlow("Iksburgserver1", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -318,7 +318,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "X" };
 			String[] destinations = { "Y" };
-			assertEquals(-3, testMaxFlow("Iksburg1", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-3, testMaxFlow("Iksburgserver1", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -327,7 +327,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "F" };
 			String[] destinations = { "A" };
-			assertEquals(-4, testMaxFlow("Iksburg1", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-4, testMaxFlow("Iksburgserver1", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -336,7 +336,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "B" };
 			String[] destinations = { "B" };
-			assertEquals(Integer.MAX_VALUE, testMaxFlow("Iksburg1", sources, destinations), "MaxFlow not correct!");
+			assertEquals(Integer.MAX_VALUE, testMaxFlow("Iksburgserver1", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -345,7 +345,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A" };
 			String[] destinations = { "H" };
-			assertEquals(240, testMaxFlow("Iksburg2", sources, destinations), "MaxFlow not correct!");
+			assertEquals(240, testMaxFlow("Iksburgserver2", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -354,7 +354,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "X" };
 			String[] destinations = { "H" };
-			assertEquals(-1, testMaxFlow("Iksburg2", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-1, testMaxFlow("Iksburgserver2", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -363,7 +363,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A" };
 			String[] destinations = { "Y" };
-			assertEquals(-2, testMaxFlow("Iksburg2", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-2, testMaxFlow("Iksburgserver2", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -372,7 +372,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "X" };
 			String[] destinations = { "Y" };
-			assertEquals(-3, testMaxFlow("Iksburg2", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-3, testMaxFlow("Iksburgserver2", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -381,7 +381,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "H" };
 			String[] destinations = { "A" };
-			assertEquals(-4, testMaxFlow("Iksburg2", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-4, testMaxFlow("Iksburgserver2", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -390,7 +390,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "F" };
 			String[] destinations = { "F" };
-			assertEquals(Integer.MAX_VALUE, testMaxFlow("Iksburg2", sources, destinations), "MaxFlow not correct!");
+			assertEquals(Integer.MAX_VALUE, testMaxFlow("Iksburgserver2", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -399,7 +399,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A", "B" };
 			String[] destinations = { "F", "G" };
-			assertEquals(30, testMaxFlow("Iksburg3", sources, destinations), "MaxFlow not correct!");
+			assertEquals(30, testMaxFlow("Iksburgserver3", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -408,7 +408,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "X", "Y" };
 			String[] destinations = { "F", "G" };
-			assertEquals(-1, testMaxFlow("Iksburg3", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-1, testMaxFlow("Iksburgserver3", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -417,7 +417,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A", "B" };
 			String[] destinations = { "X", "Y" };
-			assertEquals(-2, testMaxFlow("Iksburg3", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-2, testMaxFlow("Iksburgserver3", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -426,7 +426,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "X", "Y" };
 			String[] destinations = { "Z", "W" };
-			assertEquals(-3, testMaxFlow("Iksburg3", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-3, testMaxFlow("Iksburgserver3", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -435,7 +435,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "F" };
 			String[] destinations = { "B" };
-			assertEquals(-4, testMaxFlow("Iksburg3", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-4, testMaxFlow("Iksburgserver3", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -444,7 +444,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A", "B" };
 			String[] destinations = { "A", "B" };
-			assertEquals(Integer.MAX_VALUE, testMaxFlow("Iksburg3", sources, destinations), "MaxFlow not correct!");
+			assertEquals(Integer.MAX_VALUE, testMaxFlow("Iksburgserver3", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -454,7 +454,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "Luisenplatz", "Kantplatz" };
 			String[] destinations = { "Ilse_Langner_Platz" };
-			assertEquals(42, testMaxFlow("Iksburg4", sources, destinations), "MaxFlow not correct!");
+			assertEquals(42, testMaxFlow("Iksburgserver4", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -464,7 +464,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "Someplatz" };
 			String[] destinations = { "Ilse_Langner_Platz" };
-			assertEquals(-1, testMaxFlow("Iksburg4", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-1, testMaxFlow("Iksburgserver4", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -474,7 +474,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "Luisenplatz" };
 			String[] destinations = { "Someplatz" };
-			assertEquals(-2, testMaxFlow("Iksburg4", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-2, testMaxFlow("Iksburgserver4", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -484,7 +484,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "XPlatz", "YPlatz" };
 			String[] destinations = { "ZPlatz", "WPlatz" };
-			assertEquals(-3, testMaxFlow("Iksburg4", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-3, testMaxFlow("Iksburgserver4", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -494,7 +494,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "Marktplatz" };
 			String[] destinations = { "Luisenplatz" };
-			assertEquals(-4, testMaxFlow("Iksburg4", sources, destinations), "MaxFlow not correct!");
+			assertEquals(-4, testMaxFlow("Iksburgserver4", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -504,7 +504,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "Luisenplatz", "Kantplatz" };
 			String[] destinations = { "Luisenplatz", "Kantplatz" };
-			assertEquals(Integer.MAX_VALUE, testMaxFlow("Iksburg4", sources, destinations), "MaxFlow not correct!");
+			assertEquals(Integer.MAX_VALUE, testMaxFlow("Iksburgserver4", sources, destinations), "MaxFlow not correct!");
 		});
 	}
 
@@ -513,7 +513,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A" };
 			String[] destinations = { "F" };
-			ArrayList<String> flowGraph = new MaxFlow("Iksburg1").findResidualNetwork(sources, destinations);
+			ArrayList<String> flowGraph = new MaxFlow("Iksburgserver1").findResidualNetwork(sources, destinations);
 
 			assertTrue(areSourcesSinksMarkedRight(flowGraph, sources, destinations),
 					"Sources and/or sinks are not marked correctly!");
@@ -525,7 +525,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A" };
 			String[] destinations = { "H" };
-			ArrayList<String> flowGraph = new MaxFlow("Iksburg2").findResidualNetwork(sources, destinations);
+			ArrayList<String> flowGraph = new MaxFlow("Iksburgserver2").findResidualNetwork(sources, destinations);
 
 			assertTrue(areSourcesSinksMarkedRight(flowGraph, sources, destinations),
 					"Sources and/or sinks are not marked correctly!");
@@ -537,7 +537,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A", "B" };
 			String[] destinations = { "F", "G" };
-			ArrayList<String> flowGraph = new MaxFlow("Iksburg3").findResidualNetwork(sources, destinations);
+			ArrayList<String> flowGraph = new MaxFlow("Iksburgserver3").findResidualNetwork(sources, destinations);
 
 			assertTrue(areSourcesSinksMarkedRight(flowGraph, sources, destinations),
 					"Sources and/or sinks are not marked correctly!");
@@ -550,7 +550,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "Luisenplatz", "Kantplatz" };
 			String[] destinations = { "Ilse_Langner_Platz" };
-			ArrayList<String> flowGraph = new MaxFlow("Iksburg4").findResidualNetwork(sources, destinations);
+			ArrayList<String> flowGraph = new MaxFlow("Iksburgserver4").findResidualNetwork(sources, destinations);
 
 			assertTrue(areSourcesSinksMarkedRight(flowGraph, sources, destinations),
 					"Sources and/or sinks are not marked correctly!");
@@ -562,7 +562,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A" };
 			String[] destinations = { "F" };
-			ArrayList<String> flowGraph = new MaxFlow("Iksburg1").findResidualNetwork(sources, destinations);
+			ArrayList<String> flowGraph = new MaxFlow("Iksburgserver1").findResidualNetwork(sources, destinations);
 
 			assertTrue(isEdgeMarkedRight(flowGraph, "A[ ]*->[ ]*B"), "Edge A->B was wrongly bolded!");
 			assertTrue(isEdgeMarkedRight(flowGraph, "A[ ]*->[ ]*C"), "Edge A->C was wrongly bolded!");
@@ -580,7 +580,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A" };
 			String[] destinations = { "H" };
-			ArrayList<String> flowGraph = new MaxFlow("Iksburg2").findResidualNetwork(sources, destinations);
+			ArrayList<String> flowGraph = new MaxFlow("Iksburgserver2").findResidualNetwork(sources, destinations);
 
 			assertTrue(isEdgeMarkedRight(flowGraph, "A[ ]*->[ ]*B"), "Edge A->B was wrongly bolded!");
 			assertTrue(isEdgeMarkedRight(flowGraph, "A[ ]*->[ ]*C"), "Edge A->C was wrongly bolded!");
@@ -603,7 +603,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "A", "B" };
 			String[] destinations = { "F", "G" };
-			ArrayList<String> flowGraph = new MaxFlow("Iksburg3").findResidualNetwork(sources, destinations);
+			ArrayList<String> flowGraph = new MaxFlow("Iksburgserver3").findResidualNetwork(sources, destinations);
 
 			assertTrue(isEdgeMarkedRight(flowGraph, "A[ ]*->[ ]*C"), "Edge A->C was wrongly bolded!");
 			assertTrue(isEdgeMarkedRight(flowGraph, "A[ ]*->[ ]*D"), "Edge A->D was wrongly bolded!");
@@ -624,7 +624,7 @@ public class AllServerTests {
 		assertTimeoutPreemptively(timeout, () -> {
 			String[] sources = { "Luisenplatz", "Kantplatz" };
 			String[] destinations = { "Ilse_Langner_Platz" };
-			ArrayList<String> flowGraph = new MaxFlow("Iksburg4").findResidualNetwork(sources, destinations);
+			ArrayList<String> flowGraph = new MaxFlow("Iksburgserver4").findResidualNetwork(sources, destinations);
 
 			assertTrue(isEdgeMarkedRight(flowGraph, "Luisenplatz[ ]*->[ ]*Taunus_Platz"),
 					"Edge Luisenplatz -> Taunus_Platz was wrongly bolded!");
@@ -670,7 +670,7 @@ public class AllServerTests {
 			String[] destinations = { "F" };
 			String[] cut1 = new String[] { "A[ ]*->[ ]*B", "A[ ]*->[ ]*C" };
 			String[] cut2 = new String[] { "D[ ]*->[ ]*F", "E[ ]*->[ ]*F" };
-			ArrayList<String> flowGraph = new MaxFlow("Iksburg1").findResidualNetwork(sources, destinations);
+			ArrayList<String> flowGraph = new MaxFlow("Iksburgserver1").findResidualNetwork(sources, destinations);
 
 			assertEquals(140, cutFlow(flowGraph, cut1), "The cut1 is different from max flow!");
 
@@ -687,7 +687,7 @@ public class AllServerTests {
 			String[] cut2 = new String[] { "B[ ]*->[ ]*E", "B[ ]*->[ ]*F", "C[ ]*->[ ]*E", "C[ ]*->[ ]*F",
 					"C[ ]*->[ ]*G", "D[ ]*->[ ]*F", "D[ ]*->[ ]*G" };
 			String[] cut3 = new String[] { "B[ ]*->[ ]*E", "C[ ]*->[ ]*E", "F[ ]*->[ ]*H", "G[ ]*->[ ]*H" };
-			ArrayList<String> flowGraph = new MaxFlow("Iksburg2").findResidualNetwork(sources, destinations);
+			ArrayList<String> flowGraph = new MaxFlow("Iksburgserver2").findResidualNetwork(sources, destinations);
 
 			assertEquals(240, cutFlow(flowGraph, cut1), "The cut1 is different from max flow!");
 
@@ -706,7 +706,7 @@ public class AllServerTests {
 			String[] cut2 = new String[] { "A[ ]*->[ ]*C", "D[ ]*->[ ]*C", "D[ ]*->[ ]*F", "D[ ]*->[ ]*G",
 					"E[ ]*->[ ]*G" };
 			String[] cut3 = new String[] { "C[ ]*->[ ]*F", "D[ ]*->[ ]*F", "D[ ]*->[ ]*G", "E[ ]*->[ ]*G" };
-			ArrayList<String> flowGraph = new MaxFlow("Iksburg3").findResidualNetwork(sources, destinations);
+			ArrayList<String> flowGraph = new MaxFlow("Iksburgserver3").findResidualNetwork(sources, destinations);
 
 			assertEquals(30, cutFlow(flowGraph, cut1), "The cut1 is different from max flow!");
 
@@ -730,7 +730,7 @@ public class AllServerTests {
 			String[] cut3 = new String[] { "Luisenplatz[ ]*->[ ]*Taunus_Platz",
 					"Luisenplatz[ ]*->[ ]*Schlossgartenplatz", "Kantplatz[ ]*->[ ]*Schlossgartenplatz",
 					"Kantplatz[ ]*->[ ]*Marktplatz", "Kantplatz[ ]*->[ ]*Ernst_Ludwigsplatz" };
-			ArrayList<String> flowGraph = new MaxFlow("Iksburg4").findResidualNetwork(sources, destinations);
+			ArrayList<String> flowGraph = new MaxFlow("Iksburgserver4").findResidualNetwork(sources, destinations);
 
 			assertEquals(42, cutFlow(flowGraph, cut1), "The cut1 is different from max flow!");
 			assertEquals(42, cutFlow(flowGraph, cut2), "The cut2 is different from max flow!");

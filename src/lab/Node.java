@@ -7,7 +7,6 @@ public class Node {
     private final double delay;
     private ArrayList<Edge> edges;
     private Edge edgeToPrevious;
-    private boolean done;
     private double distanceToStart;
     private Node previousInPath;
 
@@ -17,7 +16,6 @@ public class Node {
         this.edges = new ArrayList<>();
         this.distanceToStart = Double.POSITIVE_INFINITY;
         this.previousInPath = null;
-        this.done = false;
     }
 
     public String getName(){
@@ -36,9 +34,7 @@ public class Node {
         return this.edges.get(index);
     }
 
-    public Edge getEdgeToPrevious() {
-        return edgeToPrevious;
-    }
+    public Edge getEdgeToPrevious() { return edgeToPrevious; }
 
     public void addEdge(Edge e){
         this.edges.add(e);
@@ -52,10 +48,8 @@ public class Node {
 
     public void setPreviousInPath(Node newNode){ this.previousInPath = newNode; }
 
-    public boolean isFinished(){ return this.done; }
 
-    public void finished(){ this.done = true; }
-
+    //add up all the outgoing flows
     public int getOutgoingFlow(){
         int flow = 0;
         for (int i = 0; i < edges.size(); i++) {
@@ -64,43 +58,18 @@ public class Node {
         return flow;
     }
 
-    public int getIncomingFlow(){
-        int flow = 0;
-        for (int i = 0; i < edges.size(); i++) {
-            flow += edges.get(i).getFlow();
-        }
-        return flow;
-    }
-
-
-    public void updateNeighbors(String type){
-        if(type == "Route, Distance" || type == "Distance"){
-            for(int i = 0; i < edges.size(); i++){
-                Edge currentEdge = edges.get(i);
-                if(currentEdge.getResidualFlow() > 0) {
-                    currentEdge.getB().setDistanceToStart(currentEdge.getResidualFlow());
-                    currentEdge.getB().setPreviousInPath(this);
-                    currentEdge.getB().edgeToPrevious = currentEdge;
-                }
+    /**set distance to start of this nodes neighbors(nods connected with edges from this node) to the edges residual flow;
+     * set previous in path of the neighbors to this node and
+     * set the neighbors edgeToPrevious to the edge leading from this node to the neighbor
+     */
+    public void updateNeighbors(){
+        for(int i = 0; i < edges.size(); i++){
+            Edge currentEdge = edges.get(i);
+            if(currentEdge.getResidualFlow() > 0) {
+                currentEdge.getB().setDistanceToStart(currentEdge.getResidualFlow());
+                currentEdge.getB().setPreviousInPath(this);
+                currentEdge.getB().edgeToPrevious = currentEdge;
             }
         }
-        else if(type == "Time, Distance" || type == "Time"){
-            for(int i = 0; i < edges.size(); i++){
-                Edge currentEdge = edges.get(i);
-                double edgeTime = currentEdge.getFlow() / currentEdge.getResidualFlow() * 60;
-                if(this.distanceToStart + this.delay + edgeTime < currentEdge.getB().distanceToStart) {
-                    currentEdge.getB().setDistanceToStart(this.distanceToStart + this.delay + edgeTime);
-                    currentEdge.getB().setPreviousInPath(this);
-                }
-            }
-        }
-    }
-
-    public boolean isConnectedTo(Node n){
-        for (int i = 0; i < edges.size(); i ++){
-            if(edges.get(i).getB() == n)
-                return true;
-        }
-        return false;
     }
 }

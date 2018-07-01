@@ -28,13 +28,12 @@ public class Navigation {
 	 * the nodes and edges Lists with corresponding node and edge objects
 	 * 
 	 * @param nodes
-	 *            name of the file containing the input map
+	 *            name of the list containing the nodes
 	 */
 	public Navigation(ArrayList<Node> nodes) {
 		this.cities = nodes;
 	}
 
-	public ArrayList<Node> getCities(){ return this.cities; }
 
 	/**
 	 * This methods finds the shortest route (distance) between points A and B
@@ -57,113 +56,23 @@ public class Navigation {
 	 *         if there is no path between them the original map is to be
 	 *         returned.
 	 */
-
 	public Node findPathFlow(String A, String B, ArrayList<Node> nodes){
 		this.cities = nodes;
-		return findShortestRoute(A, B);
+		return findPath(A, B);
 	}
 
-	public Node findShortestRoute(String A, String B) {
-		if (A != B) {
-			Node result = findPath(A, B, "Route, Distance");
-			if (result.getName() != "ToD")
-				return result;
-		}
-		return null;
-	}
-
-	/**
-	 * This methods finds the fastest route (in time) between points A and B on
-	 * the map given in the constructor.
-	 *
-	 * If a route is found the return value is an object of type
-	 * ArrayList<String>, where every element is a String representing one line
-	 * in the map. The output map is identical to the input map, apart from that
-	 * all edges on the shortest route are marked "bold". It is also possible to
-	 * output a map where all shortest paths starting in A are marked bold.
-	 *
-	 * The order of the edges as they appear in the output may differ from the
-	 * input.
-	 *
-	 * @param A
-	 *            Source
-	 * @param B
-	 *            Destinaton
-	 * @return returns a map as described above if A or B is not on the map or
-	 *         if there is no path between them the original map is to be
-	 *         returned.
-	 */
-	public ArrayList<String> findFastestRoute(String A, String B) {
-		if(A != B) {
-			Node result = findPath(A, B, "Time, Distance");
-			if (result.getName() != "null" && result.getName() != "ToD")
-				return makeMap(result);
-		}
-		return makeMap(null);
-	}
-
-	/**
-	 * Finds the shortest distance in kilometers between A and B using the
-	 * Dijkstra algorithm.
-	 *
-	 * @param A
-	 *            the start point A
-	 * @param B
-	 *            the destination point B
-	 * @return the shortest distance in kilometers rounded upwards.
-	 *         SOURCE_NOT_FOUND if point A is not on the map
-	 *         DESTINATION_NOT_FOUND if point B is not on the map
-	 *         SOURCE_DESTINATION_NOT_FOUND if point A and point B are not on
-	 *         the map NO_PATH if no path can be found between point A and point
-	 *         B
-	 */
-	public int findShortestDistance(String A, String B) {
-		if(A != B) {
-			Node result = findPath(A, B, "Distance");
-			return evaluateTimeAndDistance(result, B);
-		}
-		return 0;
-	}
-
-	/**
-	 * Find the fastest route between A and B using the dijkstra algorithm.
-	 *
-	 * @param pointA
-	 *            Source
-	 * @param pointB
-	 *            Destination
-	 * @return the fastest time in minutes rounded upwards. SOURCE_NOT_FOUND if
-	 *         point A is not on the map DESTINATION_NOT_FOUND if point B is not
-	 *         on the map SOURCE_DESTINATION_NOT_FOUND if point A and point B
-	 *         are not on the map NO_PATH if no path can be found between point
-	 *         A and point B
-	 */
-	public int findFastestTime(String pointA, String pointB) {
-		if(pointA != pointB) {
-			Node result = findPath(pointA, pointB, "Time");
-			return evaluateTimeAndDistance(result, pointB);
-		}
-		return 0;
-	}
-
-	public int evaluateTimeAndDistance(Node result, String B){
-		if(result.getName() == "null")
-			return (int)Math.ceil(result.getDelay());
-		else if (result.getName() == B)
-			return 0;
-		else
-			return (int)Math.ceil(result.getDelay());
-	}
-
-	public Node findPath(String A, String B, String bla){
+	private Node findPath(String A, String B){
 		//initialize nodes for searching, find start and end Nodes if existing
+		//creating auxillary variables
 		boolean foundStart = false;
 		boolean foundEnd = false;
 		boolean foundPath = false;
 		Node start = null;
 		Node end = null;
-		PriorityQueue<Node> queue = new PriorityQueue<Node>(1, (Node n1, Node n2) -> n1.getDistanceToStart() > n2.getDistanceToStart() ? -1 : 1);
+		PriorityQueue<Node> queue = new PriorityQueue<>(1, (Node n1, Node n2) -> n1.getDistanceToStart() > n2.getDistanceToStart() ? -1 : 1);
 
+		//set distance to start of every node to +infinity, and previous in path to null, basically resetting
+		//also looking if A and B are included in the map, finally add everything into a priority queue
 		for(int i = 0; i < cities.size(); i++){
 			Node currentNode = cities.get(i);
 			currentNode.setDistanceToStart(Double.NEGATIVE_INFINITY);
@@ -171,7 +80,6 @@ public class Navigation {
 			if (currentNode.getName().equals(A)){
 				start = currentNode;
 				start.setDistanceToStart(0);
-
 				foundStart = true;
 			}
 			if(cities.get(i).getName().equals(B)){
@@ -181,44 +89,42 @@ public class Navigation {
 			queue.offer(currentNode);
 		}
 		if (foundStart)
-		    start.updateNeighbors(bla);
+			start.updateNeighbors();
 		queue.remove(start);
-
 		//end of initialization
 
 		//start and/or end not found
 		if(!foundStart && !foundEnd)
-			return new Node("null", -3);
+			return new Node("null", SOURCE_DESTINATION_NOT_FOUND);
 		if(!foundStart){
-			return new Node("null", -1);
+			return new Node("null", SOURCE_NOT_FOUND);
 		}
 		if(!foundEnd){
-			return new Node("null", -2);
+			return new Node("null", DESTINATION_NOT_FOUND);
 		}//actual algorithm
 		else{
 			Node currentNode;
 			updateQueue(start, queue);
 
 			while(queue.size() > 0) {
+				//check if there is an edge connecting the next node in the queue to the path, if not remove the item
 				if(queue.peek().getPreviousInPath() == null)
 					queue.poll();
 				else {
 					currentNode = queue.poll();
 					if (currentNode == end)
 						foundPath = true;
-					currentNode.updateNeighbors(bla);
+					//update distanceToStart of every node connected to ucrrent node and set previousInPath to current Node
+					currentNode.updateNeighbors();
 					updateQueue(currentNode, queue);
 				}
 			}
 			if(foundPath){
-				if(bla == "Distance")
-					return new Node("ToD", (int)Math.ceil(end.getDistanceToStart()));
-				else if(bla == "Time")
-					return new Node("ToD", (int)Math.ceil(end.getDistanceToStart() - start.getDelay()));
+				//return the last node of the path
 				return end;
-
 			}else{
-				return new Node("null", -4);
+				//if no path is found return a new node with the name "null" and NO_PATH as delay
+				return new Node("null", NO_PATH);
 			}
 		}
 	}
@@ -227,67 +133,6 @@ public class Navigation {
 		for (int i = 0; i < n.getEdges().size(); i++){
 			if(q.remove(n.getEdge(i).getB()))
 				q.add(n.getEdge(i).getB());
-		}
-	}
-
-	/**
-	 * creates a String map of an Arraylist. If endpoint is specified/ not null it will create a map with the
-	 * shortest path to the end point
-	 * @param endpoint
-	 * 				if algorithm found a shortest path this is the end point of that path else null
-	 * @return
-	 * 		Arraylist of strings of the map
-	 */
-	public ArrayList<String> makeMap(Node endpoint){
-		//no endpoint found
-		if(endpoint == null){
-			ArrayList<String> map = new ArrayList<>();
-			String currentLine = "Digraph {";
-			Node currentNode;
-			Edge currentEdge;
-			map.add(currentLine);
-			for(int i = 0; i < cities.size(); i ++){
-				currentNode = cities.get(i);
-				for(int j = 0; j < currentNode.getEdges().size(); j++) {
-					currentEdge = currentNode.getEdge(j);
-					map.add(map.size() - i, currentNode.getName() + " -> " + currentEdge.getB().getName() + " [label=\" " + (int)currentEdge.getFlow() + "," + (int)currentEdge.getResidualFlow() + "\"];");
-				}
-				map.add(currentNode.getName() + " [label=\"" + currentNode.getName() + "\"];");
-			}
-			map.add("}");
-			return map;
-		}else {
-			Node currentNode = endpoint;
-			ArrayList<Node> path = new ArrayList<>();
-			while(currentNode != null){
-				path.add(currentNode);
-				currentNode = currentNode.getPreviousInPath();
-			}
-
-			ArrayList<String> map = new ArrayList<>();
-			Edge currentEdge;
-			map.add("Digraph {");
-			boolean partOfPath = false;
-			for(int i = 0; i < cities.size(); i ++) {
-				currentNode = cities.get(i);
-				if (path.contains(currentNode))
-					partOfPath = true;
-				else
-					partOfPath = false;
-				for (int j = 0; j < currentNode.getEdges().size(); j++) {
-					currentEdge = currentNode.getEdge(j);
-					if (partOfPath && path.contains(currentEdge.getB()) && currentEdge.getB().getPreviousInPath() == currentNode)
-						map.add(map.size() - i, currentNode.getName() + " -> " + currentEdge.getB().getName() + " [label=\"" + (int)currentEdge.getFlow() + "," + (int)currentEdge.getResidualFlow() + "\"][style=bold];");
-					else
-						map.add(map.size() - i, currentNode.getName() + " -> " + currentEdge.getB().getName() + " [label=\"" + (int)currentEdge.getFlow() + "," + (int)currentEdge.getResidualFlow() + "\"];");
-				}
-				if (partOfPath)
-					map.add(currentNode.getName() + " [label=\"" + currentNode.getName()+ "\"][style=bold];");
-				else
-					map.add(currentNode.getName() + " [label=\"" + currentNode.getName()+ "\"];");
-			}
-			map.add("}");
-			return map;
 		}
 	}
 }
