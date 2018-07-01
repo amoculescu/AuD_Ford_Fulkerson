@@ -6,6 +6,7 @@ public class Node {
     private final String name;
     private final double delay;
     private ArrayList<Edge> edges;
+    private Edge edgeToPrevious;
     private boolean done;
     private double distanceToStart;
     private Node previousInPath;
@@ -35,6 +36,10 @@ public class Node {
         return this.edges.get(index);
     }
 
+    public Edge getEdgeToPrevious() {
+        return edgeToPrevious;
+    }
+
     public void addEdge(Edge e){
         this.edges.add(e);
     }
@@ -51,21 +56,38 @@ public class Node {
 
     public void finished(){ this.done = true; }
 
+    public int getOutgoingFlow(){
+        int flow = 0;
+        for (int i = 0; i < edges.size(); i++) {
+            flow += edges.get(i).getFlow();
+        }
+        return flow;
+    }
+
+    public int getIncomingFlow(){
+        int flow = 0;
+        for (int i = 0; i < edges.size(); i++) {
+            flow += edges.get(i).getFlow();
+        }
+        return flow;
+    }
+
 
     public void updateNeighbors(String type){
         if(type == "Route, Distance" || type == "Distance"){
             for(int i = 0; i < edges.size(); i++){
                 Edge currentEdge = edges.get(i);
-                if(this.distanceToStart + currentEdge.getDistance() < currentEdge.getB().distanceToStart) {
-                    currentEdge.getB().setDistanceToStart(this.distanceToStart + currentEdge.getDistance());
+                if(currentEdge.getResidualFlow() > 0) {
+                    currentEdge.getB().setDistanceToStart(currentEdge.getResidualFlow());
                     currentEdge.getB().setPreviousInPath(this);
+                    currentEdge.getB().edgeToPrevious = currentEdge;
                 }
             }
         }
         else if(type == "Time, Distance" || type == "Time"){
             for(int i = 0; i < edges.size(); i++){
                 Edge currentEdge = edges.get(i);
-                double edgeTime = currentEdge.getDistance() / currentEdge.getMaxSpeed() * 60;
+                double edgeTime = currentEdge.getFlow() / currentEdge.getResidualFlow() * 60;
                 if(this.distanceToStart + this.delay + edgeTime < currentEdge.getB().distanceToStart) {
                     currentEdge.getB().setDistanceToStart(this.distanceToStart + this.delay + edgeTime);
                     currentEdge.getB().setPreviousInPath(this);

@@ -1,18 +1,16 @@
 package lab;
 
-import java.util.ArrayList;
-
 public class Edge {
     private final Node b;
     private final Node a;
-    private final double distance;
-    private final double maxSpeed;
+    private double flow;
+    private double residualFlow;
 
-    public Edge(Node a, Node b, int distance, int maxSpeed){
+    public Edge(Node a, Node b, int flow, int residualFlow){
         this.a = a;
         this.b = b;
-        this.distance = distance;
-        this.maxSpeed = maxSpeed;
+        this.flow = flow;
+        this.residualFlow = residualFlow;
     }
 
     public Node getA(){
@@ -23,11 +21,19 @@ public class Edge {
         return b;
     }
 
-    public double getDistance(){
-        return this.distance;
+    public double getFlow(){
+        return this.flow;
     }
 
-    public double getMaxSpeed(){
-        return this.maxSpeed;
+    public double getResidualFlow(){
+        return this.residualFlow;
+    }
+
+    public void setFlow(double flow){
+        this.flow = flow;
+    }
+
+    public void setResidualFlow(double resFlow){
+        this.residualFlow = resFlow;
     }
 }
